@@ -1,0 +1,9 @@
+#questionsPage, #highscoresPage, #finalScorePage {
+    display: none;
+}
+
+button {
+    color: white;
+    background-color: blueviolet;
+    border-radius: 5px;
+}
