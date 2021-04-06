@@ -2,6 +2,7 @@ var homePage = document.querySelector("#homePage");
 var questionsPage = document.querySelector("#questionsPage");
 var finalScorePage= document.querySelector("#finalScorePage");
 var highscoresPage = document.querySelector("#highscoresPage");
+var timer = document.querySelector("#timer");
 var startBtn = document.querySelector("#startBtn");
 var submitBtn = document.querySelector("#submitBtn");
 var backBtn = document.querySelector("#backBtn");
@@ -9,12 +10,22 @@ var clearBtn = document.querySelector("#clearBtn");
 var answerAlert = document.querySelector("#answerAlert");
 var finalScore = document.querySelector("#finalScore");
 var question = document.querySelector(".question");
-var answerA = document.querySelector(".answerA");
-var answerB = document.querySelector(".answerB");
-var answerC = document.querySelector(".answerC");
-var answerD = document.querySelector(".answerD");
 
+var secondsLeft = 100;
 var questionCounter = 0;
+
+function setTime() {
+    var timerInterval = setInterval(function() {
+        secondsLeft--;
+        timer.textContent = "Time: " + secondsLeft;
+
+        if(secondsLeft === 0) {
+            clearInterval(timerInterval);
+        }
+        
+
+    }, 1000);
+}
 
 startBtn.addEventListener("click", function(){
     homePage.style.display = "none";
@@ -133,28 +144,27 @@ function alertDisplay(truefalse) {
 }
 
 function endGame() {
-    finalScore.innerHTML = 'Your final score is ${questionCounter}'
-    questionsPage.style.display = 'none'
-    answerAlert.style.display = 'none'
-    finalScorePage.style.display = 'block'
+    finalScore.innerHTML = `Your final score is ${secondsLeft}.`
+    questionsPage.style.display = "none";
+    answerAlert.style.display = "none";
+    finalScorePage.style.display = "block";
 }
 
 
 function answerHandler(event) {
     var answerClicked = event.target.dataset.correct
     console.log('answerClicked', answerClicked)
+    questionCounter++;
     if (answerClicked === 'true') {
         answerAlert.textContent = "Correct!"
-    //   answerAlert(true)
-    //   console.log(answerCounter)
       if (questionCounter != questions.length) {
         showQuestion()
       } else {
         endGame()
       }
     } else if (answerClicked == 'false') {
+        secondsLeft = secondsLeft - 10;
       answerAlert.textContent = "Incorrect!"
-    //   console.log(answerCounter)
       if (questionCounter != questions.length) {
         showQuestion()
       } else {
@@ -170,10 +180,21 @@ function showQuestion() {
     <button data-correct=${questions[questionCounter].answerC.correct} onclick=answerHandler(event)>${questions[questionCounter].answerC.content}</button>
     <button data-correct=${questions[questionCounter].answerD.correct} onclick=answerHandler(event)>${questions[questionCounter].answerD.content}</button>`
 
-    for (var i=0; i<=3; i++); //not working ok
-    // questionsPage.innerHTML = "hello question"
-  }
+}
+
+submitBtn.addEventListener("click", function(event){
+    event.preventDefault();
+    finalScorePage.style.display = "none";
+    highscoresPage.style.display = "block";
+})
+
+
+
 
 function startGame() {
     finalScorePage.style.display = "none";
-    showQuestion()} 
+    // setTime();
+    showQuestion();
+}
+
+    setTime();
