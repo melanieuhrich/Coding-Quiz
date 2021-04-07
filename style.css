@@ -2,10 +2,6 @@
     font-family: sans-serif;
 }
 
-header {
-    display:inline;
-}
-
 #questionsPage, #highscoresPage, #finalScorePage {
     display: none;
 }

@@ -25,15 +25,6 @@ if (myStorage === null) {
 } else {
     myStorage = JSON.parse(localStorage.getItem("gameDetails"));
 }
-console.log(myStorage);
-// localStorage.clear(myStorage);
-//  var score = {
-//      finalScore: finalScore.value
-//  }
-
-// localStorage.getItem("score");
-
-// scoreDisplay.textContent = score;
 
 function setTime() {
     timerInterval = setInterval(function() {
@@ -157,10 +148,10 @@ var questions = [
 
 function alertDisplay(truefalse) {
     if (truefalse) {
-        alertDisplay.innerHTML = `<hr/>
+        alertDisplay.innerHTML = `
         <p>Correct!</p>`
     } else {
-        alertDisplay.innerHTML = `<hr/>
+        alertDisplay.innerHTML = `
         <p>Incorrect!</p>`
     }
 }
@@ -197,29 +188,6 @@ function answerHandler(event) {
     }
   }
 
-// function answerHandler(event) {
-//     var answerClicked = event.target.dataset.correct
-//     console.log('answerClicked', answerClicked)
-//     questionCounter++;
-//     if (answerClicked === 'true') {
-//         answerAlert.textContent = "Correct!"
-//       if (questionCounter != questions.length) {
-//         showQuestion()
-//       } else {
-//         endGame()
-//       }
-//     } else if (answerClicked == 'false') {
-//         secondsLeft = secondsLeft - 10;
-//       answerAlert.textContent = "Incorrect!"
-//       if (questionCounter != questions.length) {
-//         showQuestion()
-//       } else {
-//         endGame()
-//       }
-//     }
-//   }
-
-
 function showQuestion() {
     questionsPage.innerHTML = `<h2>${questions[questionCounter].question}</h2>
     <button data-correct=${questions[questionCounter].answerA.correct} onclick=answerHandler(event)>${questions[questionCounter].answerA.content}</button>
@@ -229,14 +197,12 @@ function showQuestion() {
 
 }
 
-function renderLastRegistered() {
+function renderLocalStorage() {
     console.log(JSON.parse(localStorage.getItem("gameDetails")));
     var scoreData = JSON.parse(localStorage.getItem("gameDetails")) || [];
-    // for (i=0; i<scoreData.length; i++) {
         console.log("score.details");
         scoreDisplay.innerHTML = `
         ${scoreData.map(score => `<p> ${score.initials} - ${score.score} </p>`).join("")}`
-    // }
     
 }
 
@@ -253,9 +219,9 @@ submitBtn.addEventListener("click", function(event){
     myStorage.push(gameDetails);
     console.log(gameDetails);
     localStorage.setItem("gameDetails", JSON.stringify(myStorage));
-    renderLastRegistered()
-    // scoreDisplay.textContent = secondsLeft;
-    // localStorage.setItem("score", score);
+    renderLocalStorage()
+
+
 })
 
 backBtn.addEventListener("click", function(){
@@ -266,8 +232,7 @@ backBtn.addEventListener("click", function(){
 
 clearBtn.addEventListener("click", function(){
     localStorage.clear(myStorage);
-    console.log("working");
-    renderLastRegistered();
+    renderLocalStorage();
 })
 
 
