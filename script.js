@@ -146,16 +146,6 @@ var questions = [
     }
 ]
 
-function alertDisplay(truefalse) {
-    if (truefalse) {
-        alertDisplay.innerHTML = `
-        <p>Correct!</p>`
-    } else {
-        alertDisplay.innerHTML = `
-        <p>Incorrect!</p>`
-    }
-}
-
 function endGame() {
     finalScore.innerHTML = `Your final score is ${secondsLeft}.`
     questionsPage.style.display = "none";
@@ -163,8 +153,6 @@ function endGame() {
     finalScorePage.style.display = "block";
     clearInterval(timerInterval);
 }
-
-
 
 function answerHandler(event) {
     var answerClicked = event.target.dataset.correct
@@ -194,13 +182,11 @@ function showQuestion() {
     <button data-correct=${questions[questionCounter].answerB.correct} onclick=answerHandler(event)>${questions[questionCounter].answerB.content}</button>
     <button data-correct=${questions[questionCounter].answerC.correct} onclick=answerHandler(event)>${questions[questionCounter].answerC.content}</button>
     <button data-correct=${questions[questionCounter].answerD.correct} onclick=answerHandler(event)>${questions[questionCounter].answerD.content}</button>`
-
 }
 
 function renderLocalStorage() {
     console.log(JSON.parse(localStorage.getItem("gameDetails")));
     var scoreData = JSON.parse(localStorage.getItem("gameDetails")) || [];
-        console.log("score.details");
         scoreDisplay.innerHTML = `
         ${scoreData.map(score => `<p> ${score.initials} - ${score.score} </p>`).join("")}`
     
@@ -210,18 +196,14 @@ submitBtn.addEventListener("click", function(event){
     event.preventDefault();
     finalScorePage.style.display = "none";
     highscoresPage.style.display = "block";
-    console.log(initials.value);
     var scoreDisplay = secondsLeft;
     var gameDetails = {
         initials: initials.value,
         score: scoreDisplay
     }
     myStorage.push(gameDetails);
-    console.log(gameDetails);
     localStorage.setItem("gameDetails", JSON.stringify(myStorage));
     renderLocalStorage()
-
-
 })
 
 backBtn.addEventListener("click", function(){
@@ -235,11 +217,15 @@ clearBtn.addEventListener("click", function(){
     renderLocalStorage();
 })
 
-
 function startGame() {
-    finalScorePage.style.display = "none";
     showQuestion();
     setTime();
 }
 
-    
+scoresLink.addEventListener("click", function(){ 
+    homePage.style.display = "none";
+    questionsPage.style.display = "none";
+    finalScorePage.style.display = "none";
+    highscoresPage.style.display = "block";
+    renderLocalStorage();
+}); 
