@@ -8,19 +8,41 @@ var submitBtn = document.querySelector("#submitBtn");
 var backBtn = document.querySelector("#backBtn");
 var clearBtn = document.querySelector("#clearBtn");
 var answerAlert = document.querySelector("#answerAlert");
-var finalScore = document.querySelector("#finalScore");
+var finalScore = document.querySelector(".finalScore");
+var scoreDisplay = document.querySelector("#scoreDisplay");
 var question = document.querySelector(".question");
+var initials = document.querySelector("#initialsInput");
+var scoresLink = document.querySelector("#scoresLink");
 
 var secondsLeft = 100;
 var questionCounter = 0;
+var timerInterval
+
+var myStorage = JSON.parse(localStorage.getItem("gameDetails"));
+
+if (myStorage === null) {
+    myStorage = []
+} else {
+    myStorage = JSON.parse(localStorage.getItem("gameDetails"));
+}
+console.log(myStorage);
+// localStorage.clear(myStorage);
+//  var score = {
+//      finalScore: finalScore.value
+//  }
+
+// localStorage.getItem("score");
+
+// scoreDisplay.textContent = score;
 
 function setTime() {
-    var timerInterval = setInterval(function() {
+    timerInterval = setInterval(function() {
         secondsLeft--;
         timer.textContent = "Time: " + secondsLeft;
 
         if(secondsLeft === 0) {
             clearInterval(timerInterval);
+            endGame();
         }
         
 
@@ -148,7 +170,9 @@ function endGame() {
     questionsPage.style.display = "none";
     answerAlert.style.display = "none";
     finalScorePage.style.display = "block";
+    clearInterval(timerInterval);
 }
+
 
 
 function answerHandler(event) {
@@ -173,6 +197,29 @@ function answerHandler(event) {
     }
   }
 
+// function answerHandler(event) {
+//     var answerClicked = event.target.dataset.correct
+//     console.log('answerClicked', answerClicked)
+//     questionCounter++;
+//     if (answerClicked === 'true') {
+//         answerAlert.textContent = "Correct!"
+//       if (questionCounter != questions.length) {
+//         showQuestion()
+//       } else {
+//         endGame()
+//       }
+//     } else if (answerClicked == 'false') {
+//         secondsLeft = secondsLeft - 10;
+//       answerAlert.textContent = "Incorrect!"
+//       if (questionCounter != questions.length) {
+//         showQuestion()
+//       } else {
+//         endGame()
+//       }
+//     }
+//   }
+
+
 function showQuestion() {
     questionsPage.innerHTML = `<h2>${questions[questionCounter].question}</h2>
     <button data-correct=${questions[questionCounter].answerA.correct} onclick=answerHandler(event)>${questions[questionCounter].answerA.content}</button>
@@ -182,19 +229,52 @@ function showQuestion() {
 
 }
 
+function renderLastRegistered() {
+    console.log(JSON.parse(localStorage.getItem("gameDetails")));
+    var scoreData = JSON.parse(localStorage.getItem("gameDetails")) || [];
+    // for (i=0; i<scoreData.length; i++) {
+        console.log("score.details");
+        scoreDisplay.innerHTML = `
+        ${scoreData.map(score => `<p> ${score.initials} - ${score.score} </p>`).join("")}`
+    // }
+    
+}
+
 submitBtn.addEventListener("click", function(event){
     event.preventDefault();
     finalScorePage.style.display = "none";
     highscoresPage.style.display = "block";
+    console.log(initials.value);
+    var scoreDisplay = secondsLeft;
+    var gameDetails = {
+        initials: initials.value,
+        score: scoreDisplay
+    }
+    myStorage.push(gameDetails);
+    console.log(gameDetails);
+    localStorage.setItem("gameDetails", JSON.stringify(myStorage));
+    renderLastRegistered()
+    // scoreDisplay.textContent = secondsLeft;
+    // localStorage.setItem("score", score);
 })
 
+backBtn.addEventListener("click", function(){
+    highscoresPage.style.display = "none";
+    homePage.style.display = "block";
+    location.reload();
+});
 
+clearBtn.addEventListener("click", function(){
+    localStorage.clear(myStorage);
+    console.log("working");
+    renderLastRegistered();
+})
 
 
 function startGame() {
     finalScorePage.style.display = "none";
-    // setTime();
     showQuestion();
+    setTime();
 }
 
-    setTime();
+    
