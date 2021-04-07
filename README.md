@@ -40,7 +40,7 @@ Lines 225-231: Tells scoresLink to listen for a click. In the event of a click, 
 
 # Screenshot
 
-?/.screenshot.png
+![screenshot](screenshot.png)
 
 # Link to deployed application 
 
