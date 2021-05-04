@@ -14,4 +14,4 @@ If you wish to contact me you can reach me at melanieuhrich13@gmail.com.
 
 # Link to deployed application 
 
-https://melanieuhrich.github.io/Homework-4/#highscoresPage 
+https://melanieuhrich.github.io/Coding-Quiz/
